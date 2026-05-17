@@ -249,21 +249,6 @@
     "preview": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/caption-texture-lava.png"
   },
   {
-    "name": "caption-typewriter",
-    "type": "component",
-    "title": "Typewriter",
-    "description": "Green terminal character-by-character reveal with blinking cursor",
-    "tags": [
-      "captions",
-      "caption-style",
-      "terminal",
-      "typewriter",
-      "hacker"
-    ],
-    "href": "/catalog/components/caption-typewriter",
-    "preview": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/caption-typewriter.png"
-  },
-  {
     "name": "caption-weight-shift",
     "type": "component",
     "title": "Weight Shift",
