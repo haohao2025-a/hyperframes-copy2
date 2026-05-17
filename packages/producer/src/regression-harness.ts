@@ -37,10 +37,19 @@ import {
 // In Dockerfile.test the workspace copy of aws-lambda's src isn't present,
 // so a static import here would fail at module-load time even when
 // running `--mode=in-process`. Load it on demand instead.
-async function loadLambdaLocalRender(): Promise<
-  typeof import("./regression-harness-lambda-local.js").runLambdaLocalRender
-> {
-  const mod = await import("./regression-harness-lambda-local.js");
+//
+// The signature is typed via `RunLambdaLocalRender` (in its own types-only
+// file) instead of `typeof import(...)` so producer's tsc doesn't have to
+// type-check the implementation. The implementation imports
+// `@hyperframes/aws-lambda`, whose types come from `dist/index.d.ts` after
+// aws-lambda's build runs — a chicken-and-egg with producer's tsc that
+// would otherwise fail the whole-repo build.
+import type { RunLambdaLocalRender } from "./regression-harness-lambda-local-types.js";
+
+async function loadLambdaLocalRender(): Promise<RunLambdaLocalRender> {
+  const mod = (await import("./regression-harness-lambda-local.js")) as {
+    runLambdaLocalRender: RunLambdaLocalRender;
+  };
   return mod.runLambdaLocalRender;
 }
 
