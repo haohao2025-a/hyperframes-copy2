@@ -81,17 +81,50 @@ Use a different port if `3002` is already busy:
 npx hyperframes preview --port 4567
 ```
 
-Inside the Studio:
+Inside the Studio, shortcuts are grouped the same way the playbar's `⌨` panel groups them — playback first, then work-area markers, view controls, and app-level commands. Open the `⌨` panel in the playbar for an in-app cheatsheet, a frame-jump input, and live readouts of the in/out points.
 
-| Shortcut | Use |
+### Playback
+
+| Shortcut | Action |
 | --- | --- |
-| `Space` | Play or pause (focus on the page body) |
-| `Left Arrow` / `Right Arrow` | Nudge seek bar by 1 second (seek bar focused) |
-| `Shift+Left Arrow` / `Shift+Right Arrow` | Nudge seek bar by 5 seconds (seek bar focused) |
+| `Space` | Play or pause |
+| `K` | Stop |
+| `J` | Play backward (press again to shuttle faster) |
+| `L` | Play forward (press again to shuttle faster) |
+| `←` / `→` | Step 1 frame |
+| `Shift+←` / `Shift+→` | Step 10 frames |
+
+`J` and `L` build the classic NLE shuttle: each repeat ramps the playback rate up. Tap `K` between shuttle bursts to stop. With `K` held, tapping `J` or `L` steps one frame in that direction.
+
+### Work area (in / out points)
+
+| Shortcut | Action |
+| --- | --- |
+| `I` | Set in-point at the playhead |
+| `Shift+I` | Clear in-point |
+| `O` | Set out-point at the playhead |
+| `Shift+O` | Clear out-point |
+| `A` | Jump to in-point (or composition start if unset) |
+| `E` | Jump to out-point (or composition end if unset) |
+
+The in and out points define a **work area**. When loop is on, both forward and backward playback loop within those boundaries — useful for tightening a transition or scrubbing a single clip without trimming it. The seek bar renders a teal band between in and out, with tick markers at each point. Clear the markers from the `⌨` panel or with `Shift+I` and `Shift+O`.
+
+### View
+
+| Shortcut | Action |
+| --- | --- |
+| `Cmd+Scroll` / `Ctrl+Scroll` over the preview | Zoom the preview at the cursor |
+
+### Application
+
+| Shortcut | Action |
+| --- | --- |
 | `Shift+T` | Show or hide the timeline editor |
-| `Cmd+1` / `Ctrl+1` | Switch to Compositions |
-| `Cmd+2` / `Ctrl+2` | Switch to Assets |
-| `Delete` / `Backspace` | Delete the selected timeline clip (when not typing in an editor) |
+| `Cmd+1` / `Ctrl+1` | Switch sidebar to Compositions |
+| `Cmd+2` / `Ctrl+2` | Switch sidebar to Assets |
+| `Cmd+Z` / `Ctrl+Z` | Undo |
+| `Cmd+Shift+Z` / `Ctrl+Shift+Z` / `Ctrl+Y` | Redo |
+| `Delete` / `Backspace` | Delete the selected timeline clip or DOM element (when not typing in an editor) |
 | `Escape` | Leave a sub-composition or close editor dialogs |
 
 <Tip>
