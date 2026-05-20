@@ -23,8 +23,18 @@ export function useRenderClipContent({
       const pid = projectIdRef.current;
       if (!pid) return null;
 
-      // Resolve composition source path using the compIdToSrc map
       let compSrc = el.compositionSrc;
+      if (compSrc) {
+        try {
+          const parsed = new URL(compSrc, window.location.origin);
+          const previewPrefix = `/api/projects/${pid}/preview/`;
+          if (parsed.pathname.startsWith(previewPrefix)) {
+            compSrc = parsed.pathname.slice(previewPrefix.length);
+          }
+        } catch {
+          // already relative
+        }
+      }
       if (compSrc && compIdToSrc.size > 0) {
         const resolved =
           compIdToSrc.get(el.id) ||
