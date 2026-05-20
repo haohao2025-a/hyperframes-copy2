@@ -16,6 +16,7 @@ import { extractHtml } from "./htmlExtractor.js";
 // captureScreenshots removed — full-page screenshot replaces per-section shots
 import { extractTokens } from "./tokenExtractor.js";
 import { downloadAssets, downloadAndRewriteFonts } from "./assetDownloader.js";
+import { extractFontMetadata } from "./fontMetadataExtractor.js";
 // briefGenerator.ts, visual-style, capture-summary removed — DESIGN.md replaces them
 import {
   setupAnimationCapture,
@@ -418,6 +419,33 @@ export async function captureWebsite(
 
     // Download fonts and rewrite URLs to local paths
     extracted.headHtml = await downloadAndRewriteFonts(extracted.headHtml, outputDir);
+
+    // Identify each downloaded font by reading its OpenType name table.
+    // Modern frameworks hash font filenames; this manifest tells the
+    // downstream pipeline (DESIGN.md authoring, beat sub-agents) which file
+    // belongs to which family without guessing from filename patterns.
+    try {
+      const fontsManifest = extractFontMetadata(
+        join(outputDir, "assets", "fonts"),
+        join(outputDir, "extracted", "fonts-manifest.json"),
+      );
+      if (fontsManifest.families.length > 0) {
+        const summary = fontsManifest.families
+          .map((f) => `${f.family}${f.variable ? " (variable)" : ""} × ${f.fileCount}`)
+          .join(", ");
+        console.log(`Font metadata extracted: ${summary}`);
+        if (fontsManifest.unidentified.length > 0) {
+          console.warn(
+            `  ${fontsManifest.unidentified.length} font file(s) could not be identified — DESIGN.md should flag these explicitly.`,
+          );
+        }
+      }
+    } catch (err) {
+      console.warn(
+        "Font metadata extraction failed (non-fatal):",
+        err instanceof Error ? err.message : err,
+      );
+    }
 
     // Save animation catalog — lean version for the agent (not 745 raw CSS declarations)
     if (animationCatalog) {
