@@ -8,27 +8,27 @@ These are NOT advanced — they're standard motion design patterns that every co
 
 ## Table of Contents
 
-**Named text animation effects** (per-character, per-word, per-line, whole-element) with exact GSAP specs are in [`text-effects.md`](text-effects.md) — 24 bundled effects, no install needed. Use those for all headline and label animations instead of inventing timing from scratch.
+**Named text animation effects** (per-character, per-word, per-line, whole-element) — 24 effects with exact GSAP specs come from the separate `pixel-point/animate-text` skill. See [`text-effects.md`](text-effects.md) for the effect-name vocabulary and instructions for loading the upstream skill. Use those for all headline and label animations instead of inventing timing from scratch.
 
 **HTML-in-Canvas patterns** (live DOM as GPU texture: iPhone/MacBook mockups, liquid glass, magnetic, portal, shatter, text cursor — using `drawElementImage` + `layoutsubtree`) are in [`html-in-canvas-patterns.md`](html-in-canvas-patterns.md) — 504 lines, one shared boilerplate + ~6 effect recipes. Use for 1–3 hero beats per video, not every beat.
 
 ---
 
-| #   | Technique                           | What it does                                                               | Best for                                         |
-| --- | ----------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------ |
-| 1   | **SVG Path Drawing**                | Logos/icons draw themselves stroke by stroke                               | Logo reveals, diagram builds, connector lines    |
-| 2   | **Canvas 2D Procedural Art**        | Animated noise, particles, data viz — frame-by-frame via GSAP proxy        | Generative backgrounds, ambient texture          |
-| 3   | **CSS 3D Transforms**               | Card flips, perspective grids, folding panels                              | Product reveals, comparison scenes               |
-| 4   | **Per-Word Kinetic Typography**     | Text animates word-by-word with stagger timing                             | Thesis statements, key messages, quotes          |
-| 5   | **Lottie Animation**                | Captured or external Lottie plays as overlay/background                    | Brand animations, micro-interactions             |
-| 6   | **Video Compositing**               | Product videos play inline, masked, overlaid                               | Demo footage, screen recordings                  |
-| 7   | **Character-by-Character Typing**   | Terminal-style code reveals, search bar interactions                       | Developer tools, CLI demos                       |
-| 8   | **Variable Font Axis Animation**    | Weight, width, slant, optical size morph over time                         | Premium typography, brand wordmarks              |
-| 9   | **GSAP MotionPathPlugin**           | Elements follow SVG curves, orbital motion, spirals                        | Dynamic entrances, connector animations          |
-| 10  | **Velocity-Matched Transitions**    | Outgoing blur/translate matches incoming for seamless cuts                 | Beat transitions, scene changes                  |
-| 11  | **Audio-Reactive Animation**        | Elements pulse to narration frequency bands                                | Background textures, text glow, ambient motion   |
-| 12  | **Clip-Path Reveal Masks**          | Fixed window that content slides through (text/images enter from one side) | Headline intros, image reveals, wipe effects     |
-| 13  | **WebGL Fragment Shader Art**       | Full GPU generative backgrounds — FBM domain warp, cosine palettes         | Hero backgrounds, atmospheric scenes             |
+| #   | Technique                         | What it does                                                               | Best for                                       |
+| --- | --------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------- |
+| 1   | **SVG Path Drawing**              | Logos/icons draw themselves stroke by stroke                               | Logo reveals, diagram builds, connector lines  |
+| 2   | **Canvas 2D Procedural Art**      | Animated noise, particles, data viz — frame-by-frame via GSAP proxy        | Generative backgrounds, ambient texture        |
+| 3   | **CSS 3D Transforms**             | Card flips, perspective grids, folding panels                              | Product reveals, comparison scenes             |
+| 4   | **Per-Word Kinetic Typography**   | Text animates word-by-word with stagger timing                             | Thesis statements, key messages, quotes        |
+| 5   | **Lottie Animation**              | Captured or external Lottie plays as overlay/background                    | Brand animations, micro-interactions           |
+| 6   | **Video Compositing**             | Product videos play inline, masked, overlaid                               | Demo footage, screen recordings                |
+| 7   | **Character-by-Character Typing** | Terminal-style code reveals, search bar interactions                       | Developer tools, CLI demos                     |
+| 8   | **Variable Font Axis Animation**  | Weight, width, slant, optical size morph over time                         | Premium typography, brand wordmarks            |
+| 9   | **GSAP MotionPathPlugin**         | Elements follow SVG curves, orbital motion, spirals                        | Dynamic entrances, connector animations        |
+| 10  | **Velocity-Matched Transitions**  | Outgoing blur/translate matches incoming for seamless cuts                 | Beat transitions, scene changes                |
+| 11  | **Audio-Reactive Animation**      | Elements pulse to narration frequency bands                                | Background textures, text glow, ambient motion |
+| 12  | **Clip-Path Reveal Masks**        | Fixed window that content slides through (text/images enter from one side) | Headline intros, image reveals, wipe effects   |
+| 13  | **WebGL Fragment Shader Art**     | Full GPU generative backgrounds — FBM domain warp, cosine palettes         | Hero backgrounds, atmospheric scenes           |
 
 ---
 

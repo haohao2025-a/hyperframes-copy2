@@ -688,7 +688,7 @@ Control bridge actions: play, pause, seek, set-muted, set-playback-rate, enable-
 
 16 reference docs covering:
 
-- text-effects.md — 24 named text animation effects (per-character, per-word, per-line, whole) with exact GSAP specs; bundled in `assets/text-effects/`
+- text-effects.md — 24 named text animation effects (per-character, per-word, per-line, whole) — vocabulary reference for the separate `pixel-point/animate-text` skill (load it via `npx skills add pixel-point/animate-text` or `/animate-text`). Specs live in that upstream skill, not in this repo.
 - transitions.md + transitions/catalog.md + 14 category subfiles
 - css-patterns.md (marker patterns)
 - dynamic-techniques.md (caption animation)
