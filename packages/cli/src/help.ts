@@ -68,6 +68,10 @@ const GROUPS: Group[] = [
     ],
   },
   {
+    title: "Account",
+    commands: [["auth", "Sign in to HeyGen and manage credentials"]],
+  },
+  {
     title: "Settings",
     commands: [["telemetry", "Manage anonymous usage telemetry"]],
   },

@@ -860,6 +860,63 @@ This is suppressed in CI environments, non-TTY shells, and when `HYPERFRAMES_NO_
   </Tab>
 </Tabs>
 
+## hyperframes auth
+
+Sign in to HeyGen and manage credentials. Credentials are stored in
+`~/.heygen/credentials` (mode `0600`) and are **shared with the
+`heygen` CLI** — sign in with one and the other picks up the session.
+
+Resolution order (first match wins):
+
+1. `HEYGEN_API_KEY` environment variable
+2. `HYPERFRAMES_API_KEY` environment variable (hyperframes alias)
+3. `~/.heygen/credentials`
+
+### Subcommands
+
+#### `auth login --api-key`
+
+Save a HeyGen API key. The key is verified against `GET /v3/users/me`
+before the command reports success; a rejected key is not left on disk.
+
+```bash
+# Interactive hidden-input prompt
+hyperframes auth login --api-key
+
+# Pipe a key from stdin (CI-friendly)
+echo "$HEYGEN_API_KEY" | hyperframes auth login --api-key
+```
+
+#### `auth status`
+
+Show the active credential's source, type, and verified identity
+(account + billing snapshot). Exits non-zero when nothing is configured
+or the API rejects the credential, so scripts can check sign-in state.
+
+```bash
+hyperframes auth status
+hyperframes auth status --json   # machine-readable
+```
+
+#### `auth logout`
+
+Remove the stored credential. Prompts for confirmation on a TTY.
+
+```bash
+hyperframes auth logout
+hyperframes auth logout --keep-api-key   # clear only an OAuth session
+hyperframes auth logout --yes            # skip the confirmation prompt
+```
+
+### Environment variables
+
+| Variable | Description |
+|----------|-------------|
+| `HEYGEN_API_KEY` | Override the stored credential. |
+| `HYPERFRAMES_API_KEY` | Alias for `HEYGEN_API_KEY`. |
+| `HEYGEN_API_URL` | API base URL (default `https://api.heygen.com`). |
+| `HEYGEN_CONFIG_DIR` | Credentials directory (default `~/.heygen`). |
+
 ## hyperframes lambda
 
 Deploy HyperFrames distributed rendering to AWS Lambda and drive renders from your laptop or CI.
