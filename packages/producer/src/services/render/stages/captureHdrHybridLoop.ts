@@ -32,19 +32,16 @@ import {
   crossfade,
   initTransparentBackground,
   initializeSession,
-  queryElementStacking,
 } from "@hyperframes/engine";
 import type { FileServerHandle } from "../../fileServer.js";
 import type { ProducerLogger } from "../../../logger.js";
 import {
   type HdrCompositeContext,
-  type HdrPerfCollector,
-  type ProgressCallback,
-  type RenderJob,
   type TransitionRange,
-  addHdrTiming,
   compositeHdrFrame,
-} from "../../renderOrchestrator.js";
+} from "../../hdrCompositor.js";
+import { type HdrPerfCollector, addHdrTiming, timeHdrPhaseAsync } from "../hdrPerf.js";
+import type { ProgressCallback, RenderJob } from "../../renderOrchestrator.js";
 import { writeFileExclusiveSync } from "../shared.js";
 import {
   type ShaderTransitionWorkerPool,
@@ -56,6 +53,7 @@ import {
   distributeLayeredHybridFrameRanges,
   ensureFrameWritten,
   partitionTransitionFrames,
+  seekInjectAndQueryStacking,
 } from "./captureHdrFrameShared.js";
 import { updateJobStatus } from "../shared.js";
 
@@ -307,26 +305,22 @@ export async function runHybridLayeredFrameLoop(input: HybridLoopInput): Promise
             throw err instanceof Error ? err : new Error(String(err));
           });
         } else {
-          const beforeCaptureHook = session.onBeforeCapture;
-          let timingStart = Date.now();
-          await session.page.evaluate((t: number) => {
-            if (window.__hf && typeof window.__hf.seek === "function") window.__hf.seek(t);
-          }, time);
-          addHdrTiming(hdrPerf, "frameSeekMs", timingStart);
-          if (beforeCaptureHook) {
-            timingStart = Date.now();
-            await beforeCaptureHook(session.page, time);
-            addHdrTiming(hdrPerf, "frameInjectMs", timingStart);
-          }
-          timingStart = Date.now();
-          const stackingInfo = await queryElementStacking(session.page, nativeHdrIds);
-          addHdrTiming(hdrPerf, "stackingQueryMs", timingStart);
+          const stackingInfo = await seekInjectAndQueryStacking(
+            session.page,
+            time,
+            session.onBeforeCapture,
+            nativeHdrIds,
+            hdrPerf,
+            "frameSeekMs",
+            "frameInjectMs",
+            "stackingQueryMs",
+          );
           canvas.fill(0);
           // Rebind ctx to this worker's session for per-layer captures
           const wctx: HdrCompositeContext = { ...hdrCompositeCtx, domSession: session };
-          timingStart = Date.now();
-          await compositeHdrFrame(wctx, canvas, time, stackingInfo, undefined, i);
-          addHdrTiming(hdrPerf, "normalCompositeMs", timingStart);
+          await timeHdrPhaseAsync(hdrPerf, "normalCompositeMs", () =>
+            compositeHdrFrame(wctx, canvas, time, stackingInfo, undefined, i),
+          );
           if (debugDumpEnabled && debugDumpDir && i % 30 === 0) {
             writeFileExclusiveSync(
               join(debugDumpDir, `frame_${String(i).padStart(4, "0")}_final_rgb48le.bin`),
